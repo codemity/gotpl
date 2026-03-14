@@ -1,6 +1,6 @@
 # ![GoSo](logo.jpg)
 
-![coverage-badge-do-not-edit](https://img.shields.io/badge/Coverage-21%25-red.svg?longCache=true&style=flat)
+![coverage-badge-do-not-edit](https://img.shields.io/badge/Coverage-72%25-yellowgreen.svg?longCache=true&style=flat)
 
 ## Table of contents
 
