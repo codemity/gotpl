@@ -22,7 +22,7 @@ case "$1" in
 
 "cmd")
   docker run --rm \
-    --user $(id -u):$(id -g) \
+    --user "$(id -u):$(id -g)" \
     --name "${BASE_NAME}-cmd" \
     -e DEBUG \
     -e GOCACHE="${PWD}/tmp" \
