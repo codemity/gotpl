@@ -13,12 +13,16 @@ touch .env.local
 case "$1" in
 
 "prep")
+  scripts/tools.sh install
+  go install github.com/"${VENDOR}"/auxilium@latest
+  go install github.com/"${VENDOR}"/notatio@latest
+  go install github.com/"${VENDOR}"/goforma@latest
   # Coming soon...
   ;;
 
 "cmd")
   docker run --rm \
-    --user $(id -u):$(id -g) \
+    --user "$(id -u):$(id -g)" \
     --name "${BASE_NAME}-cmd" \
     -e DEBUG \
     -e GOCACHE="${PWD}/tmp" \
