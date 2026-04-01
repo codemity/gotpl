@@ -15,8 +15,9 @@ touch .env.local
 case "$1" in
 
 "prep")
+  export VERSION=latest
   scripts/tools.sh install
-  GOPROXY=direct
+  export GOPROXY=direct
   go install github.com/"${VENDOR}"/auxilium@latest
   go install github.com/"${VENDOR}"/notatio@latest
   go install github.com/"${VENDOR}"/goforma@latest
@@ -169,7 +170,7 @@ EOF
   go build \
     -ldflags "\
 -X 'main.name=${BASE_NAME}' \
--X 'main.version=latest' \
+-X 'main.version=${VERSION}' \
 -X 'main.copyright=${VENDOR}' \
 -X 'main.authorName=${VENDOR}' \
 -X 'main.buildTime=$(date -u +"%Y-%m-%dT%H:%M:%SZ")'\
@@ -179,7 +180,7 @@ EOF
 "install")
   go install -ldflags "\
 -X 'main.name=${BASE_NAME}' \
--X 'main.version=latest' \
+-X 'main.version=${VERSION}' \
 -X 'main.copyright=${VENDOR}' \
 -X 'main.authorName=${VENDOR}' \
 -X 'main.buildTime=$(date -u +"%Y-%m-%dT%H:%M:%SZ")'\
