@@ -12,9 +12,11 @@ func WithValues(
 	name, description, version, copyright, authorName, authorEmail, buildTime string,
 ) Option {
 	return func(app *cli.App) {
+		bi, _ := debug.ReadBuildInfo()
+
 		app.Name = name
 		app.Description = description
-		app.Version = resolveVersion(version)
+		app.Version = resolveVersion(version, bi)
 		app.Copyright = copyright
 
 		app.Authors = []*cli.Author{
@@ -26,7 +28,7 @@ func WithValues(
 
 		app.HideVersion = false
 
-		resolvedBuildTime := resolveBuildTime(buildTime)
+		resolvedBuildTime := resolveBuildTime(buildTime, bi)
 		if resolvedBuildTime == "" {
 			return
 		}
@@ -40,22 +42,24 @@ func WithValues(
 	}
 }
 
-func resolveVersion(fallback string) string {
-	bi, ok := debug.ReadBuildInfo()
-	if !ok || fallback == "latest" {
+func resolveVersion(fallback string, bi *debug.BuildInfo) string {
+	if fallback != "" {
 		return fallback
+	}
+
+	if bi == nil {
+		return "latest"
 	}
 
 	if bi.Main.Version != "" && bi.Main.Version != "(devel)" {
 		return bi.Main.Version
 	}
 
-	return fallback
+	return "latest"
 }
 
-func resolveBuildTime(fallback string) string {
-	bi, ok := debug.ReadBuildInfo()
-	if !ok {
+func resolveBuildTime(fallback string, bi *debug.BuildInfo) string {
+	if bi == nil {
 		return fallback
 	}
 
