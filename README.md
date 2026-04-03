@@ -70,6 +70,14 @@ $ docker run codemityio/gotpl
 
 ## Packages
 
+## Dependencies
+
+### Graph
+
+![](docs/depgraph.svg)
+
+### Licenses
+
 ## License
 
 This project is licensed under the <YOUR_LICENCE> License. See the [LICENSE](LICENSE) file for details.
