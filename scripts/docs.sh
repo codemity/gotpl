@@ -177,7 +177,7 @@ case "$1" in
     "${VENDOR}"/notatio:latest graphviz --input-path="docs/depgraph.dot" --output-format=svg
   # licenses
   docker run --rm \
-    --name "${BASE_NAME}-go-dev" \
+    --name "${BASE_NAME}-golang-dev" \
     -v "${PWD}:${PWD}" \
     -w "${PWD}" \
     "${VENDOR}"/golang-dev:latest go-licenses report ./... > tmp/licenses.csv
@@ -185,6 +185,7 @@ case "$1" in
     --document-path=README.md \
     --csv-path=tmp/licenses.csv \
     --skip="github.com/${VENDOR}/${BASE_NAME}" \
+    --skip="github.com/${VENDOR}/${BASE_NAME}/internal/app" \
     --header="Licenses" \
     --limiter-left="##" \
     --limiter-right="## License" \
