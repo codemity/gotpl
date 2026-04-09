@@ -33,7 +33,7 @@ case "$1" in
       --name "${BASE_NAME}-notatio-plantuml" \
       -w "${PWD}" \
       -v "${PWD}:${PWD}" \
-      "${VENDOR}"/notatio:latest plantuml --input-path="pkg/${target}/graph.puml" --output-format=svg
+      codemityio/notatio:latest plantuml --input-path="pkg/${target}/graph.puml" --output-format=svg
   done
   ;;
 
@@ -58,7 +58,7 @@ case "$1" in
       --name "${BASE_NAME}-notatio-graphviz" \
       -v "${PWD}:${PWD}" \
       -w "${PWD}" \
-      "${VENDOR}"/notatio:latest graphviz --input-path="pkg/${target}/depgraph.dot" --output-format=svg
+      codemityio/notatio:latest graphviz --input-path="pkg/${target}/depgraph.dot" --output-format=svg
   done
   ;;
 
@@ -83,7 +83,7 @@ case "$1" in
       --name "${BASE_NAME}-pandoc" \
       -v "${PWD}:${PWD}" \
       -w "${PWD}" \
-      "${VENDOR}"/pandoc:latest \
+      codemityio/pandoc:latest \
       --wrap=auto --columns=120 \
       --from=markdown-implicit_figures \
       --to=gfm --output="cmd/${target}/README.md" "cmd/${target}/README.md"
@@ -109,7 +109,7 @@ case "$1" in
     docker run --rm \
       -v "${PWD}:${PWD}" \
       -w "${PWD}" \
-      "${VENDOR}"/pandoc:latest \
+      codemityio/pandoc:latest \
       --wrap=auto --columns=120 \
       --from=markdown-implicit_figures \
       --to=gfm --output="pkg/${target}/README.md" "pkg/${target}/README.md"
@@ -130,22 +130,22 @@ case "$1" in
       --name "${BASE_NAME}-notatio-mermaid" \
       -w "${PWD}" \
       -v "${PWD}:${PWD}" \
-      "${VENDOR}"/notatio:latest mermaid --input-path="pkg/${target}" --output-format=svg --recursive
+      codemityio/notatio:latest mermaid --input-path="pkg/${target}" --output-format=svg --recursive
     docker run --rm \
       --name "${BASE_NAME}-notatio-plantuml" \
       -w "${PWD}" \
       -v "${PWD}:${PWD}" \
-      "${VENDOR}"/notatio:latest plantuml --input-path="pkg/${target}" --output-format=svg --recursive
+      codemityio/notatio:latest plantuml --input-path="pkg/${target}" --output-format=svg --recursive
     docker run --rm \
       --name "${BASE_NAME}-notatio-graphviz" \
       -v "${PWD}:${PWD}" \
       -w "${PWD}" \
-      "${VENDOR}"/notatio:latest graphviz --input-path="pkg/${target}" --output-format=svg --recursive
+      codemityio/notatio:latest graphviz --input-path="pkg/${target}" --output-format=svg --recursive
   done
   ;;
 
 "main")
-# summaries
+  # summaries
   packages=$(find "cmd" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
   paths=
   for target in ${packages//,/ }; do
@@ -174,18 +174,16 @@ case "$1" in
     --name "${BASE_NAME}-notatio-graphviz" \
     -v "${PWD}:${PWD}" \
     -w "${PWD}" \
-    "${VENDOR}"/notatio:latest graphviz --input-path="docs/depgraph.dot" --output-format=svg
+    codemityio/notatio:latest graphviz --input-path="docs/depgraph.dot" --output-format=svg
   # licenses
   docker run --rm \
     --name "${BASE_NAME}-golang-dev" \
     -v "${PWD}:${PWD}" \
     -w "${PWD}" \
-    "${VENDOR}"/golang-dev:latest go-licenses report ./... > tmp/licenses.csv
+    codemityio/golang-dev:latest go-licenses report --ignore="github.com/${VENDOR}/${BASE_NAME}" ./... >tmp/licenses.csv
   notatio tol \
     --document-path=README.md \
     --csv-path=tmp/licenses.csv \
-    --skip="github.com/${VENDOR}/${BASE_NAME}" \
-    --skip="github.com/${VENDOR}/${BASE_NAME}/internal/app" \
     --header="Licenses" \
     --limiter-left="##" \
     --limiter-right="## License" \
@@ -197,7 +195,7 @@ case "$1" in
     --name "${BASE_NAME}-pandoc" \
     -v "${PWD}:${PWD}" \
     -w "${PWD}" \
-    "${VENDOR}"/pandoc:latest \
+    codemityio/pandoc:latest \
     --wrap=auto --columns=120 \
     --from=markdown-implicit_figures \
     --to=gfm --output=README.md README.md

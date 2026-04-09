@@ -18,9 +18,9 @@ case "$1" in
   export VERSION=latest
   scripts/tools.sh install
   export GOPROXY=direct
-  go install github.com/"${VENDOR}"/auxilium@latest
-  go install github.com/"${VENDOR}"/notatio@latest
-  go install github.com/"${VENDOR}"/goforma@latest
+  go install github.com/codemityio/auxilium@latest
+  go install github.com/codemityio/notatio@latest
+  go install github.com/codemityio/goforma@latest
   ;;
 
 "cmd")
@@ -30,7 +30,7 @@ case "$1" in
     -e GOBIN="${PWD}/bin" \
     -v "${PWD}:${PWD}" \
     -w "${PWD}" \
-    "${VENDOR}"/golang-dev:latest sh -c "${COMMAND}"
+    codemityio/golang-dev:latest sh -c "${COMMAND}"
   ;;
 
 "run")
@@ -64,7 +64,7 @@ case "$1" in
   ;;
 
 "cleanup")
-  find . -iname '*_mock.go' -exec rm {} \;
+  find . -iname '*_mock_test.go' -exec rm {} \;
   find . -iname '*.so' -exec rm {} \;
   git clean -dXf pkg internal cmd
   rm -Rf tmp var bin
@@ -149,7 +149,7 @@ EOF
   ;;
 
 "next")
-# get latest v-tag (supports vX.Y.Z and vX.Y.Z-preN) and bump prerelease or patch
+  # get latest v-tag (supports vX.Y.Z and vX.Y.Z-preN) and bump prerelease or patch
   latest=$(git tag -l "v*" | sort -V | tail -n1)
 
   if [[ $latest =~ ^v([0-9]+\.[0-9]+\.[0-9]+)-([a-zA-Z]+)([0-9]+)$ ]]; then
